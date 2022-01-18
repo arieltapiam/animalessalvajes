@@ -29,6 +29,13 @@ class Animal{
         this.#comentarios = comentario
     }
 
+    get comentarios(){
+        return this.#comentarios    
+    }
+
+
+
+
     get sonido(){
         return this.#sonido    }
 
