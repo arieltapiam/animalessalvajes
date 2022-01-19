@@ -12,16 +12,18 @@ const moduloAnimal = (function(){
     const tipo_animal = document.querySelector('#animal')
     const btn_registrar = document.querySelector('#btnRegistrar')
     const preview_animal = document.querySelector('#preview')
-    const modal_animal = document.querySelector('.modal-content')
-    
+    const modal_animal = document.querySelector('.contenido-animal')
+    const modal_audio = document.querySelector('.contenido-audio')
 
 
     //Events
     tipo_animal.addEventListener('change', chageHandler)//Evento de dropdownlist para capturar tipo de animal
     btn_registrar.addEventListener('click', clickHandler)//Evento de boton para generar objeto y carta de animal
 
+
     $('#exampleModal').on('show.bs.modal', beforeModalShow)
-      
+    $('#audiomodal').on('show.bs.modal', beforeAudioModalShow)
+    $('#audiomodal').on('hide.bs.modal', afterAudioModalShow)
 
     //Funciones
     async function init() {//Funcion principal
@@ -107,7 +109,7 @@ const moduloAnimal = (function(){
     function renderTarjeta(obj_animal, index = 0){
         const html = `<div class="card col-sm-12 col-md-6 col-lg-4 p-0">
             <img data-toggle="modal" data-target="#exampleModal" data-index="${index}" class="tarjeta" src="assets/imgs/${obj_animal.img}" class="card-img-top" alt="${obj_animal.name}">
-            <div class="bg-dark card-body text-center">
+            <div data-toggle="modal" data-target="#audiomodal" data-index="${index}" class="bg-dark card-body text-center">
                 <i class="fas fa-volume-up text-white"></i>
             </div>
         </div>`
@@ -130,6 +132,19 @@ const moduloAnimal = (function(){
             </div>`
     }
 
+    function beforeAudioModalShow(e){
+        const index = e.relatedTarget.dataset.index
+        const obj_animal = state.instancias[index]
+
+        modal_audio.innerHTML = `<audio controls autoplay>
+                                <source src="assets/sounds/${obj_animal.sonido}" type="audio/mp3">
+                            </audio>`
+    }
+
+        function afterAudioModalShow(){
+            modal_audio.innerHTML = ``
+
+        }
 
     return {init:init}
 })()
